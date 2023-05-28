@@ -1,0 +1,43 @@
+import java.util.Scanner;
+
+public class TorreDeHanoi {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Digite o número de discos: ");
+        int numDiscos = scanner.nextInt();
+
+        long startTime = System.currentTimeMillis();
+        int movimentos = resolverTorreDeHanoi(numDiscos, 'A', 'C', 'B');
+        long endTime = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+
+        System.out.println("\nResultado:");
+        System.out.println("Tempo gasto: " + formatarTempo(totalTime));
+        System.out.println("Quantidade de movimentos: " + movimentos);
+    }
+
+    public static int resolverTorreDeHanoi(int numDiscos, char estacaOrigem, char estacaDestino, char estacaAuxiliar) {
+        int movimentos = 0;
+
+        if (numDiscos == 1) {
+            System.out.println("Mover disco 1 de " + estacaOrigem + " para " + estacaDestino);
+            movimentos = 1;
+        } else {
+            movimentos += resolverTorreDeHanoi(numDiscos - 1, estacaOrigem, estacaAuxiliar, estacaDestino);
+            System.out.println("Mover disco " + numDiscos + " de " + estacaOrigem + " para " + estacaDestino);
+            movimentos++;
+            movimentos += resolverTorreDeHanoi(numDiscos - 1, estacaAuxiliar, estacaDestino, estacaOrigem);
+        }
+
+        return movimentos;
+    }
+
+    public static String formatarTempo(long millis) {
+        long segundos = (millis / 1000) % 60;
+        long minutos = (millis / (1000 * 60)) % 60;
+        long horas = (millis / (1000 * 60 * 60)) % 24;
+
+        return String.format("%02d:%02d:%02d:%03d", horas, minutos, segundos, millis % 1000);
+    }
+}
